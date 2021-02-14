@@ -10,10 +10,12 @@
         <fai class="text-gray-300" icon="search" />
       </div>
       <input
+        v-model="titleInput"
         type="text"
         name="search"
         class="block w-full py-1.5 pl-9 pr-12 text-base border text-md font-bold border-gray-200 text-gray-500 rounded-full focus:outline-none"
         placeholder="Add channels"
+        @keyup.enter="createItem"
       />
     </div>
     <div class="mb-4">
@@ -72,7 +74,8 @@ export default {
   data () {
     return {
       stateChanged: false,
-      channelsSelected: []
+      channelsSelected: [],
+      titleInput: ''
     }
   },
   computed: {
@@ -80,7 +83,7 @@ export default {
   },
   watch: {
     channels: function (value) {
-      this.channelsSelected = value
+      this.channelsSelected = [...value]
     }
   },
   methods: {
@@ -88,14 +91,57 @@ export default {
       this.channelsSelected = this.channelsSelected.filter(element => element.id !== id)
       this.stateChanged = true
     },
+    createItem () {
+      if (!this.titleInput) return
+      const newItem = {
+        title: this.titleInput,
+        icon: this.generateIcon(this.titleInput),
+        id: this.generateId()
+      }
+      this.channelsSelected.push(newItem)
+      this.titleInput = ''
+      this.stateChanged = true
+    },
+    generateId () {
+      if (!this.channelsSelected.length) return 1
+      const ids = this.channelsSelected.map(el => el.id)
+      return Math.max(...ids) + 1
+    },
+    generateIcon (title) {
+      const searchString = title.toLowerCase()
+      let icon = ['fas', 'address-book']
+      const iconsPull = [
+        {
+          keywords: ['mail', '@', '.com'],
+          icon: ['fas', 'envelope']
+        },
+        {
+          keywords: ['phone', 'call', 'number'],
+          icon: ['fas', 'phone-alt']
+        },
+        {
+          keywords: ['whatsapp'],
+          icon: ['fab', 'whatsapp']
+        }
+      ]
+      for (const node of iconsPull) {
+        if (node.keywords.some(el => searchString.includes(el))) {
+          icon = node.icon
+          break
+        }
+      }
+      return icon
+    },
     onDrag () {
       this.stateChanged = true
     },
     resetState () {
       this.channelsSelected = [...this.channels]
+      this.stateChanged = false
     },
     saveState () {
       this.$store.commit('SET_CHANNELS', this.channelsSelected)
+      this.stateChanged = false
     }
   }
 }
