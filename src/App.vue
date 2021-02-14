@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-gray-100">
+  <div class="min-h-screen bg-gray-200 flex justify-center items-center">
     <ChannelManager />
   </div>
 </template>

@@ -3,10 +3,10 @@ import App from './App.vue'
 import store from './store'
 import './style.css'
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faGripVertical } from '@fortawesome/free-solid-svg-icons'
+import { faGripVertical, faSearch } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
-library.add(faGripVertical)
+library.add(faGripVertical, faSearch)
 
 Vue.component('fai', FontAwesomeIcon)
 

@@ -5,8 +5,12 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    channels: []
   },
   mutations: {
+    SET_CHANNELS (state, data) {
+      state.channels = data
+    }
   },
   actions: {
   },
