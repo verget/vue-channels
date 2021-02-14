@@ -11,9 +11,5 @@ export default new Vuex.Store({
     SET_CHANNELS (state, data) {
       state.channels = data
     }
-  },
-  actions: {
-  },
-  modules: {
   }
 })

@@ -41,13 +41,15 @@
       <div v-if="stateChanged" class="text-right">
         <button
           type="button"
-          class="inline-flex border border-gray-300 rounded-full py-2 px-5 shadow-sm text-sm leading-4 font-bold text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 mr-2"
+          class="inline-flex border border-gray-300 rounded-full py-2 px-5 shadow-sm text-sm leading-4 font-bold text-gray-700 bg-white hover:bg-gray-50 focus:outline-none mr-2"
+          @click="resetState"
         >
           Cancel
         </button>
         <button
           type="button"
-          class="inline-flex border border-transparent rounded-full py-2 px-5 shadow-sm text-sm leading-4 font-bold text-white bg-black hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+          class="inline-flex border border-transparent rounded-full py-2 px-5 shadow-sm text-sm leading-4 font-bold text-white bg-black hover:bg-gray-700 focus:outline-none"
+          @click="saveState"
         >
           Apply
         </button>
@@ -57,8 +59,9 @@
 </template>
 
 <script>
-import Channel from '@/components/Channel'
 import draggable from 'vuedraggable'
+import Channel from '@/components/Channel'
+import { mapState } from 'vuex'
 
 export default {
   name: 'ChannelManager',
@@ -69,16 +72,15 @@ export default {
   data () {
     return {
       stateChanged: false,
-      channelsSelected: [
-        {
-          id: 1,
-          title: 'Call center'
-        },
-        {
-          id: 2,
-          title: 'team@trengo.com'
-        }
-      ]
+      channelsSelected: []
+    }
+  },
+  computed: {
+    ...mapState(['channels'])
+  },
+  watch: {
+    channels: function (value) {
+      this.channelsSelected = value
     }
   },
   methods: {
@@ -88,6 +90,12 @@ export default {
     },
     onDrag () {
       this.stateChanged = true
+    },
+    resetState () {
+      this.channelsSelected = [...this.channels]
+    },
+    saveState () {
+      this.$store.commit('SET_CHANNELS', this.channelsSelected)
     }
   }
 }

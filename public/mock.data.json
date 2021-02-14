@@ -1,0 +1,44 @@
+{
+  "channels": [
+    {
+      "id": 1,
+      "icon": [
+        "fas",
+        "envelope"
+      ],
+      "title": "Team@trengo.com"
+    },
+    {
+      "id": 2,
+      "icon": [
+        "fas",
+        "phone-alt"
+      ],
+      "title": "Call center"
+    },
+    {
+      "id": 3,
+      "icon": [
+        "fab",
+        "whatsapp"
+      ],
+      "title": "Whatsapp Business"
+    },
+    {
+      "id": 4,
+      "icon": [
+        "fas",
+        "envelope"
+      ],
+      "title": "(test) development California"
+    },
+    {
+      "id": 5,
+      "icon": [
+        "fab",
+        "whatsapp"
+      ],
+      "title": "Whatsapp Business Iceland"
+    }
+  ]
+}
