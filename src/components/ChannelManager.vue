@@ -18,36 +18,41 @@
     </div>
     <div class="mb-4">
       <draggable
+        v-if="channelsSelected.length"
         v-model="channelsSelected"
         group="channels"
         ghost-class="ghost"
-        @start="drag = true"
-        @end="drag = false"
+        @change="onDrag"
       >
-        <channel
-          v-for="element in channelsSelected"
-          :key="element.id"
-          :data="element"
-          class="mb-4"
-          @remove="removeItem(element.id)"
-        />
+        <transition-group name="list" tag="p">
+          <channel
+            v-for="element in channelsSelected"
+            :key="element.id"
+            :data="element"
+            class="mb-4"
+            @remove="removeItem(element.id)"
+          />
+        </transition-group>
       </draggable>
+      <div v-else class="text-center">No elements</div>
     </div>
     <hr class="mb-5" />
-    <div class="text-right">
-      <button
-        type="button"
-        class="inline-flex border border-gray-300 rounded-full py-2 px-5 shadow-sm text-sm leading-4 font-bold text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 mr-2"
-      >
-        Cancel
-      </button>
-      <button
-        type="button"
-        class="inline-flex border border-transparent rounded-full py-2 px-5 shadow-sm text-sm leading-4 font-bold text-white bg-black hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
-      >
-        Apply
-      </button>
-    </div>
+    <transition name="fade">
+      <div v-if="stateChanged" class="text-right">
+        <button
+          type="button"
+          class="inline-flex border border-gray-300 rounded-full py-2 px-5 shadow-sm text-sm leading-4 font-bold text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 mr-2"
+        >
+          Cancel
+        </button>
+        <button
+          type="button"
+          class="inline-flex border border-transparent rounded-full py-2 px-5 shadow-sm text-sm leading-4 font-bold text-white bg-black hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+        >
+          Apply
+        </button>
+      </div>
+    </transition>
   </div>
 </template>
 
@@ -63,6 +68,7 @@ export default {
   },
   data () {
     return {
+      stateChanged: false,
       channelsSelected: [
         {
           id: 1,
@@ -78,6 +84,10 @@ export default {
   methods: {
     removeItem (id) {
       this.channelsSelected = this.channelsSelected.filter(element => element.id !== id)
+      this.stateChanged = true
+    },
+    onDrag () {
+      this.stateChanged = true
     }
   }
 }
@@ -85,7 +95,25 @@ export default {
 
 <style scoped>
 .ghost {
-  opacity: 0.5;
+  opacity: 0.5s;
   background: #c8ebfb;
+}
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 1s;
+}
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
+
+.list-enter-active,
+.list-leave-active {
+  transition: all 0.5s;
+}
+.list-enter,
+.list-leave-to {
+  opacity: 0;
+  transform: translateX(30px);
 }
 </style>
