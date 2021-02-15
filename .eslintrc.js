@@ -13,15 +13,16 @@ module.exports = {
   parserOptions: {
     parser: 'babel-eslint'
   },
+  ignorePatterns: ['*.spec.js'],
   rules: {
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     quotes: ['error', 'single'],
     'vue/html-self-closing': ['error', {
-      'html': {
-        'void': 'any',
-        'normal': 'never',
-        'component': 'any'
+      html: {
+        void: 'any',
+        normal: 'never',
+        component: 'any'
       }
     }],
     'vue/singleline-html-element-content-newline': 'off',

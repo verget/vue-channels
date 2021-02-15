@@ -2,7 +2,7 @@ import { createLocalVue, shallowMount } from '@vue/test-utils'
 import Channel from '@/components/Channel.vue'
 const localVue = createLocalVue()
 
-let fakeChannel = {
+const fakeChannel = {
   id: 1,
   title: 'Fake Channel',
   icon: [
@@ -20,7 +20,7 @@ describe('Channel', () => {
         localVue,
         propsData: { data: fakeChannel },
         stubs: {
-          fai : true
+          fai: true
         }
       }
     )
@@ -33,7 +33,7 @@ describe('Channel', () => {
   it('renders props title when passed', () => {
     expect(wrapper.html()).toContain('Fake Channel')
   })
-  
+
   it('emmits correct call when remove click triggered', () => {
     const button = wrapper.find('.remove-area')
     button.trigger('click')
