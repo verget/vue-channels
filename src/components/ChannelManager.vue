@@ -124,9 +124,9 @@ export default {
           icon: ['fab', 'whatsapp']
         }
       ]
-      for (const node of iconsPull) {
-        if (node.keywords.some(el => searchString.includes(el))) {
-          icon = node.icon
+      for (const one of iconsPull) {
+        if (one.keywords.some(el => searchString.includes(el))) {
+          icon = one.icon
           break
         }
       }
