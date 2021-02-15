@@ -8,7 +8,7 @@
     </span>
     <span class="font-bold mr-3"> {{ data.title }}</span>
     <div
-      class="text-gray-500 text-sm ml-auto cursor-pointer font-bold"
+      class="text-gray-500 text-sm ml-auto cursor-pointer font-bold remove-area"
       @click="emitRemove"
     >
       Remove
