@@ -4,21 +4,9 @@
   >
     <h3 class="font-bold text-2xl mb-5">Channels</h3>
     <div class="mt-1 relative shadow-sm mb-4">
-      <div
-        class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
-      >
-        <fai class="text-gray-300" icon="search" />
-      </div>
-      <input
-        v-model="titleInput"
-        type="text"
-        name="search"
-        class="block w-full py-1.5 pl-9 pr-12 text-base border text-md font-bold border-gray-200 text-gray-500 rounded-full focus:outline-none"
-        placeholder="Add channels"
-        @keyup.enter="createItem"
-      />
+      <search @done="createItem" />
     </div>
-    <div class="mb-4">
+    <div class="mb-4 overflow-auto h-56">
       <draggable
         v-if="channelsSelected.length"
         v-model="channelsSelected"
@@ -41,20 +29,13 @@
     <hr class="mb-5" />
     <transition name="fade">
       <div v-if="stateChanged" class="text-right">
-        <button
-          type="button"
-          class="inline-flex border border-gray-300 rounded-full py-2 px-5 shadow-sm text-sm leading-4 font-bold text-gray-700 bg-white hover:bg-gray-50 focus:outline-none mr-2"
+        <CustomButton
+          class="mr-2"
+          title="Cancel"
+          type="primary"
           @click="resetState"
-        >
-          Cancel
-        </button>
-        <button
-          type="button"
-          class="inline-flex border border-transparent rounded-full py-2 px-5 shadow-sm text-sm leading-4 font-bold text-white bg-black hover:bg-gray-700 focus:outline-none"
-          @click="saveState"
-        >
-          Apply
-        </button>
+        />
+        <CustomButton title="Apply" type="default" @click="saveState" />
       </div>
     </transition>
   </div>
@@ -63,19 +44,22 @@
 <script>
 import draggable from 'vuedraggable'
 import Channel from '@/components/Channel'
+import Search from '@/components/Search'
+import CustomButton from '@/components/CustomButton'
 import { mapState } from 'vuex'
 
 export default {
   name: 'ChannelManager',
   components: {
     Channel,
+    Search,
+    CustomButton,
     draggable
   },
   data () {
     return {
       stateChanged: false,
-      channelsSelected: [],
-      titleInput: ''
+      channelsSelected: []
     }
   },
   computed: {
@@ -91,15 +75,14 @@ export default {
       this.channelsSelected = this.channelsSelected.filter(element => element.id !== id)
       this.stateChanged = true
     },
-    createItem () {
-      if (!this.titleInput) return
+    createItem (input) {
+      if (!input) return
       const newItem = {
-        title: this.titleInput,
-        icon: this.generateIcon(this.titleInput),
+        title: input,
+        icon: this.generateIcon(input),
         id: this.generateId()
       }
-      this.channelsSelected.push(newItem)
-      this.titleInput = ''
+      this.channelsSelected.unshift(newItem)
       this.stateChanged = true
     },
     generateId () {
